@@ -1,4 +1,4 @@
-const { Contact, schemas } = require('../models/contacts');
+const { Contact, addSchema, updateFavoriteSchema } = require('../models/contacts');
 const { HttpError, controllerWrapper } = require('../helpers');
 
 const listContacts = async (req, res) => {
@@ -16,7 +16,7 @@ const getContactById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-  const { error } = schemas.addSchema.validate(req.body);
+  const { error } = addSchema.validate(req.body);
   if (error) {
     throw HttpError(400, 'missing required name field');
   }
@@ -25,7 +25,7 @@ const addContact = async (req, res) => {
 };
 
 const updateContact = async (req, res) => {
-  const { error } = schemas.addSchema.validate(req.body);
+  const { error } = addSchema.validate(req.body);
   if (error) {
     throw HttpError(400, 'missing fields');
   }
@@ -48,8 +48,21 @@ const removeContact = async (req, res) => {
   });
 };
 
+// const updateFavorite = async (req, res) => {
+//   const { error } = updateFavoriteSchema.validate(req.body);
+//   if (error) {
+//     throw HttpError(400, 'missing field favorite');
+//   }
+//   const { id } = req.params;
+//   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+//   if (!result) {
+//     throw HttpError(404, 'Not found');
+//   }
+//   res.json(result);
+// };
+
 const updateFavorite = async (req, res) => {
-  const { error } = schemas.updateFavoriteSchema.validate(req.body);
+  const { error } = updateFavoriteSchema.validate(req.body);
   if (error) {
     throw HttpError(400, 'missing field favorite');
   }

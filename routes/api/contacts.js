@@ -2,9 +2,7 @@ const express = require('express');
 
 const controller = require('../../controllers/contacts');
 
-const { validateBody, isValidId } = require('../../helpers');
-
-const { schemas } = require('../../models/contacts');
+const { isValidId } = require('../../helpers');
 
 const router = express.Router();
 
@@ -12,16 +10,11 @@ router.get('/', controller.listContacts);
 
 router.get('/:id', isValidId, controller.getContactById);
 
-router.post('/', validateBody(schemas.addSchema), controller.addContact);
+router.post('/', controller.addContact);
 
-router.put('/:id', isValidId, validateBody(schemas.addSchema), controller.updateContact);
+router.put('/:id', isValidId, controller.updateContact);
 
-router.patch(
-  '/:id/favorite',
-  isValidId,
-  validateBody(schemas.updateFavoriteSchema),
-  controller.updateFavorite
-);
+router.patch('/:id/favorite', isValidId, controller.updateFavorite);
 
 router.delete('/:id', isValidId, controller.removeContact);
 
