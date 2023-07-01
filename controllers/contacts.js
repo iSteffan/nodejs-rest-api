@@ -85,14 +85,14 @@
 // });
 
 // module.exports = router;
-const { Contact } = require('../models/contacts');
+
+const { Contact, schemas } = require('../models/contacts');
 const { HttpError, controllerWrapper } = require('../helpers');
 
 const listContacts = async (req, res) => {
   const result = await Contact.find();
   res.json(result);
 };
-// Повертає масив контактів.
 
 const getContactById = async (req, res) => {
   const { id } = req.params;
@@ -105,11 +105,19 @@ const getContactById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
+  const { error } = schemas.addSchema.validate(req.body);
+  if (error) {
+    throw HttpError(400, 'missing required name field');
+  }
   const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
 
 const updateContact = async (req, res) => {
+  const { error } = schemas.addSchema.validate(req.body);
+  if (error) {
+    throw HttpError(400, 'missing fields');
+  }
   const { id } = req.params;
   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
@@ -120,7 +128,7 @@ const updateContact = async (req, res) => {
 
 const removeContact = async (req, res) => {
   const { id } = req.params;
-  const result = await Contact.findByIdAndRemove(id);
+  const result = await Contact.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, 'Not found');
   }
@@ -130,6 +138,10 @@ const removeContact = async (req, res) => {
 };
 
 const updateFavorite = async (req, res) => {
+  const { error } = schemas.updateFavoriteSchema.validate(req.body);
+  if (error) {
+    throw HttpError(400, 'missing field favorite');
+  }
   const { id } = req.params;
   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
