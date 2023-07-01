@@ -85,3 +85,64 @@
 // });
 
 // module.exports = router;
+const { Contact } = require('../models/contacts');
+const { HttpError, controllerWrapper } = require('../helpers');
+
+const listContacts = async (req, res) => {
+  const result = await Contact.find();
+  res.json(result);
+};
+// Повертає масив контактів.
+
+const getContactById = async (req, res) => {
+  const { id } = req.params;
+  // const result = await Book.findOne({_id: id})
+  const result = await Contact.findById(id);
+  if (!result) {
+    throw HttpError(404, 'Not found');
+  }
+  res.json(result);
+};
+
+const addContact = async (req, res) => {
+  const result = await Contact.create(req.body);
+  res.status(201).json(result);
+};
+
+const updateContact = async (req, res) => {
+  const { id } = req.params;
+  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, 'Not found');
+  }
+  res.json(result);
+};
+
+const removeContact = async (req, res) => {
+  const { id } = req.params;
+  const result = await Contact.findByIdAndRemove(id);
+  if (!result) {
+    throw HttpError(404, 'Not found');
+  }
+  res.json({
+    message: 'Delete success',
+  });
+};
+
+const updateFavorite = async (req, res) => {
+  const { id } = req.params;
+  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, 'Not found');
+  }
+  res.json(result);
+};
+
+module.exports = {
+  listContacts: controllerWrapper(listContacts),
+  getContactById: controllerWrapper(getContactById),
+  addContact: controllerWrapper(addContact),
+  updateContact: controllerWrapper(updateContact),
+  updateFavorite: controllerWrapper(updateFavorite),
+  removeContact: controllerWrapper(removeContact),
+};
