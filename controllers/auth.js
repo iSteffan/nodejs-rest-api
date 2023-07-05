@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
-const { User, registerSchema } = require('../models/users');
+const { User } = require('../models/user');
 
 const { HttpError, controllerWrapper } = require('../helpers');
 
@@ -9,12 +9,6 @@ const { HttpError, controllerWrapper } = require('../helpers');
 
 const register = async (req, res) => {
   const { email, password } = req.body;
-  const { error } = registerSchema.validate(req.body);
-
-  if (error) {
-    throw HttpError(400, 'Please write valid email and check your password - min length 6 symbols');
-  }
-
   const user = await User.findOne({ email });
 
   if (user) {
