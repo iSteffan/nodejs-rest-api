@@ -71,9 +71,19 @@ const getCurrent = async (req, res) => {
   });
 };
 
+const changeSubscription = async (req, res) => {
+  const { _id } = req.user;
+  const { subscription } = req.body;
+  await User.findByIdAndUpdate(_id, { subscription });
+  res.json({
+    message: `Your subscription has been changed to ${subscription}`,
+  });
+};
+
 module.exports = {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
   logout: controllerWrapper(logout),
   getCurrent: controllerWrapper(getCurrent),
+  changeSubscription: controllerWrapper(changeSubscription),
 };
