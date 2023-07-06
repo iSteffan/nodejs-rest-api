@@ -13,4 +13,7 @@ router.post('/login', validateBody(loginSchema), controller.login);
 // logout
 router.post('/logout', authenticate, controller.logout);
 
+// current
+router.get('/current', authenticate, controller.getCurrent);
+
 module.exports = router;
