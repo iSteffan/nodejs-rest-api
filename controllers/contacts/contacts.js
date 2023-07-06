@@ -1,5 +1,5 @@
-const { Contact, addSchema, updateFavoriteSchema } = require('../models/contact');
-const { HttpError, controllerWrapper } = require('../helpers');
+const { Contact, addSchema, updateFavoriteSchema } = require('../../models/contact');
+const { HttpError, controllerWrapper } = require('../../helpers');
 
 const listContacts = async (req, res) => {
   const { _id: owner } = req.user;

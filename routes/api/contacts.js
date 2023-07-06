@@ -1,6 +1,6 @@
 const express = require('express');
 
-const controller = require('../../controllers/contacts');
+const controller = require('../../controllers/contacts/contacts');
 
 const { isValidId, authenticate } = require('../../middlewares');
 
