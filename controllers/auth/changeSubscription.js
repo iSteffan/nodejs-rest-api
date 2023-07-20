@@ -1,5 +1,6 @@
 const { User } = require('../../models/user');
 
+// Оновлення підписки
 const changeSubscription = async (req, res) => {
   const { _id } = req.user;
   const { subscription } = req.body;
